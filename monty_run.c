@@ -1,5 +1,6 @@
 #include "monty.h"
 #include <string.h>
+#include <stdlib.h>
 
 void free_tokens(void);
 unsigned int token_arr_len(void);
@@ -35,7 +36,7 @@ unsigned int token_arr_len(void)
 {
 	unsigned int tok_len = 0;
 
-	while (op_tok[tok_len])
+	while (op_toks[tok_len])
 		tok_len++;
 	return (tok_len);
 }
@@ -101,7 +102,7 @@ void (*get_op_func(char *opcode))(stack_t**, unsigned int)
 
 	for (o = 0; op_funcs[o].opcode; o++)
 	{
-		if (strcmp(opcode, op_funcs[i].opcode) == 0)
+		if (strcmp(opcode, op_funcs[o].opcode) == 0)
 			return (op_funcs[o].f);
 	}
 
@@ -118,21 +119,21 @@ int run_monty(FILE *script_fd)
 
 {
 	stack_t *stack = NULL;
-	char *c = NULL;
-	size_t l = 0, exit_status = EXIT_SUCCESS;
+	char *line = NULL;
+	size_t len = 0, exit_status = EXIT_SUCCESS;
 	unsigned int line_num = 0, prev_tok_len = 0;
 	void (*op_func)(stack_t**, unsigned int);
 
 	if (init_stack(&stack) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 
-	while (getline(&c, &l, script_fd) != -1)
+	while (getline(&line, &len, script_fd) != -1)
 	{
 		line_num++;
-		op_toks = strtow(c, DELIMS);
+		op_toks = strtow(line, DELIMS);
 		if (op_toks == NULL)
 		{
-			if (is_empty_line(c, DELIMS))
+			if (is_empty_line(line, DELIMS))
 				continue;
 			free_stack(&stack);
 			return (malloc_error());
@@ -165,12 +166,12 @@ int run_monty(FILE *script_fd)
 	}
 	free_stack(&stack);
 
-	if (c && *c == 0)
+	if (line && *line == 0)
 	{
-		free(c);
+		free(line);
 		return (malloc_error());
 	}
 
-	free(c);
+	free(line);
 	return (exit_status);
 }

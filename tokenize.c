@@ -1,9 +1,10 @@
+#include "monty.h"
 #include <stdlib.h>
 
 char **strtow(char *str, char *delims);
-intis_delim(char ch, char *delims);
-intget_word_length(char *str, char *delims);
-intget_word_count(char *str, char *delims);
+int is_delim(char ch, char *delims);
+int get_word_length(char *str, char *delims);
+int get_word_count(char *str, char *delims);
 char *get_next_word(char *str, char *delims);
 
 /**
@@ -18,27 +19,27 @@ char *get_next_word(char *str, char *delims);
 char **strtow(char *str, char *delims)
 
 {
-char **w = NULL;
-int count, length, n, i = 0;
+	char **w = NULL;
+	int count, length, n, i = 0;
 
-if (str == NULL || !*str)
+	if (str == NULL || !*str)
 	return (NULL);
-count = get_word_count(str, delims);
+	count = get_word_count(str, delims);
 
 
-if (count == 0)
+	if (count == 0)
 	return (NULL);
-w = malloc((count + 1) * sizeof(char *));
-if (w == NULL)
+	w = malloc((count + 1) * sizeof(char *));
+	if (w == NULL)
 	return (NULL);
-while (i < count)
-{
+	while (i < count)
+	{
 	length = get_word_length(str, delims);
 	if (is_delim(*str, delims))
 	{
 		str = get_next_word(str, delims);
 	}
-	w[i] = malloc((wordLen + 1) * sizeof(char));
+	w[i] = malloc((length + 1) * sizeof(char));
 	if (w[i] == NULL)
 	{
 		while (i >= 0)
@@ -73,18 +74,18 @@ return (w);
 * Return: 1 (success), 0 if it fails
 */
 
-intis_delim(char ch, char *delims)
+int is_delim(char ch, char *delims)
 
 {
-int k = 0;
+	int k = 0;
 
-while (delims[k])
-{
+	while (delims[k])
+	{
 	if (delims[k] == ch)
 		return (1);
 	k++;
-}
-return (0);
+	}
+	return (0);
 }
 
 /**
@@ -96,12 +97,13 @@ return (0);
 * Return: word length
 */
 
-intget_word_length(char *str, char *delims)
-{
-int length = 0, p = 1, i = 0;
+int get_word_length(char *str, char *delims)
 
-while (*(str + i))
 {
+	int length = 0, p = 1, i = 0;
+
+	while (*(str + i))
+	{
 	if (is_delim(str[i], delims))
 		p = 1;
 	else if (p)
@@ -111,8 +113,8 @@ while (*(str + i))
 	if (length > 0 && is_delim(str[i], delims))
 		break;
 	i++;
-}
-return (length);
+	}
+	return (length);
 }
 
 /**
@@ -124,13 +126,13 @@ return (length);
 * Return: word count
 */
 
-intget_word_count(char *str, char *delims)
+int get_word_count(char *str, char *delims)
 
 {
-int count = 0, pending = 1, i = 0;
+	int count = 0, pending = 1, i = 0;
 
-while (*(str + i))
-{
+	while (*(str + i))
+	{
 	if (is_delim(str[i], delims))
 		pending = 1;
 	else if (pending)

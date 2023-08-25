@@ -30,11 +30,11 @@ void monty_push(stack_t **stack, unsigned int line_number)
 		return;
 	}
 
-	for (a = 0; op_toks[1][i]; a++)
+	for (a = 0; op_toks[1][a]; a++)
 	{
 		if (op_toks[1][a] == '-' && a == 0)
 			continue;
-		if (op_toks[1][a] < '0' || op_toks[1][i] > '9')
+		if (op_toks[1][a] < '0' || op_toks[1][a] > '9')
 		{
 			set_op_tok_error(no_int_error(line_number));
 			return;
@@ -109,13 +109,13 @@ void monty_pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *n = NULL;
 
-	if ((*stack)->n == NULL)
+	if ((*stack)->next == NULL)
 	{
 		set_op_tok_error(pop_error(line_number));
 		return;
 	}
 
-	n = (*stack)->next->n;
+	n = (*stack)->next->next;
 	free((*stack)->next);
 	if (n)
 		n->prev = *stack;

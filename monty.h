@@ -4,12 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#define _POSIX_C_SOURCE 200809L
 
 #define STACK 0
 #define QUEUE 1
 #define DELIMS " \n\t\a\b"
 
-/* Global OPCODE TokensS */
+
+/* Global OPCODE Tokens */
 extern char **op_toks;
 
 /**
@@ -51,7 +53,7 @@ unsigned int token_arr_len(void);
 int run_monty(FILE *script_fd);
 void set_op_tok_error(int error_code);
 
-/* OPCODE Function */
+/* OPCODE */
 void monty_push(stack_t **stack, unsigned int line_number);
 void monty_pall(stack_t **stack, unsigned int line_number);
 void monty_pint(stack_t **stack, unsigned int line_number);
@@ -73,6 +75,7 @@ void monty_queue(stack_t **stack, unsigned int line_number);
 /* Custom stdlib functions */
 char **strtow(char *str, char *delims);
 char *get_int(int n);
+ssize_t getline(char **, size_t *, FILE *);
 
 /* ERROR codes and Messages*/
 int usage_error(void);

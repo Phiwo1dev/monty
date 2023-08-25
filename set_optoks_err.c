@@ -21,7 +21,7 @@ void set_op_tok_error(int error_code)
 	}
 	while (c < tok_len)
 	{
-		new_tok[c] = op_tok[c];
+		new_tok[c] = op_toks[c];
 		c++;
 	}
 	exit_str = get_int(error_code);
@@ -33,6 +33,6 @@ void set_op_tok_error(int error_code)
 	}
 	new_tok[c++] = exit_str;
 	new_tok[c] = NULL;
-	free(op_tok);
-	op_tok = new_tok;
+	free(op_toks);
+	op_toks = new_tok;
 }
